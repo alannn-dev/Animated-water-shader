@@ -1,7 +1,9 @@
 uniform float uTime;
 uniform float uBigWavesElevation;
-uniform vec2  uBigWavesFrequency;
-uniform float  uBigWavesSpeed;
+uniform vec2 uBigWavesFrequency;
+uniform float uBigWavesSpeed;
+
+varying float vElevation;
 
 void main ()
 {
@@ -18,4 +20,7 @@ void main ()
     vec4 projectedPosition = projectionMatrix * viewPosition;
 
     gl_Position = projectedPosition;
+
+    // Varying added to get the vertex elevation & send it to the fragment to mix colors.
+    vElevation = elevation;
 }
