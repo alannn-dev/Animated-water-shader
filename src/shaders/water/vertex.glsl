@@ -94,16 +94,22 @@ void main ()
 {
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
 
-    // Elevation
+    // BIG WAVES Elevation
+    
     float elevation = sin(modelPosition.x * uBigWavesFrequency.x + uTime * uBigWavesSpeed) *
                       sin(modelPosition.z * uBigWavesFrequency.y + uTime) * uBigWavesSpeed *
                       uBigWavesElevation;
 
+    // SMALL WAVES elevation (Small waves added along big waves)
+
     float frequency = 3.0; // Frequency to get more waves.
     float amplitude = 0.15; // 0.15 for amplitude (cnoise is now between -0.15 & 0.15).
 
-    // 'uTime * 0.02' for slower speed.
-    elevation += cnoise(vec3(modelPosition.xz * frequency, uTime * 0.02)) * amplitude;
+    for(float i = 1.0; i <= 3.0; i++)
+    {
+        // -= abs(): Digging the surface with clean trenches.
+        elevation -= abs(cnoise(vec3(modelPosition.xz * frequency, uTime * 0.02)) * amplitude); // 'uTime * 0.02' for slower speed.
+    }
 
     modelPosition.y += elevation;
     
