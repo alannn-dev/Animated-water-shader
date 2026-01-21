@@ -2,6 +2,9 @@ uniform float uTime;
 uniform float uBigWavesElevation;
 uniform vec2 uBigWavesFrequency;
 uniform float uBigWavesSpeed;
+uniform float uSmallWavesElevation;
+uniform float uSmallWavesFrequency;
+uniform float uSmallWavesSpeed;
 
 varying float vElevation;
 
@@ -102,14 +105,19 @@ void main ()
 
     // SMALL WAVES elevation (Small waves added along big waves)
 
-    float frequency = 3.0; // Frequency to get more waves.
-    float amplitude = 0.15; // 0.15 for amplitude (cnoise is now between -0.15 & 0.15).
+    /* float uSmallWavesFrequency = 3.0; */ // Frequency to get more waves.
+    /* float uSmallWavesElevation = 0.15; */ // 0.15 for amplitude (cnoise is now between -0.15 & 0.15).
 
     // Layering 3 layers of details for small waves.
-    for(float i = 1.0; i <= 3.0; i++)
+    for(float i = 1.0; i <= 5.0; i++)
     {
         // -= abs(): Digging the surface with clean trenches.
-        elevation -= abs(cnoise(vec3(modelPosition.xz * frequency * i, uTime * 0.02)) * amplitude / i); // 'uTime * 0.02' for slower speed.
+        elevation -= abs(
+                        cnoise(vec3(modelPosition.xz * 
+                        uSmallWavesFrequency * i,
+                        uTime * uSmallWavesSpeed)) * 
+                        uSmallWavesElevation / i
+                        );
     }
 
     modelPosition.y += elevation;
