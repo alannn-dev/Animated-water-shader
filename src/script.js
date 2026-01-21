@@ -24,8 +24,8 @@ const scene = new THREE.Scene()
 const waterGeometry = new THREE.PlaneGeometry(2, 2, 128, 128)
 
 // Color
-debugObject.depthColor = '#0000ff',
-debugObject.surfaceColor = '#8888ff'
+debugObject.depthColor = '#26315f',
+debugObject.surfaceColor = '#4cd0f0'
 
 
 // Material
@@ -45,7 +45,12 @@ const waterMaterial = new THREE.ShaderMaterial({
 
         // Color debug
         uDepthColor: {value: new THREE.Color(debugObject.depthColor) },
-        uSurfaceColor: { value: new THREE.Color(debugObject.surfaceColor) }
+        uSurfaceColor: { value: new THREE.Color(debugObject.surfaceColor) },
+        
+        // uColorOffset allows to shift the gradient up or down.
+        uColorOffset: { value: 0.2},
+        // uColorMultiplier is used to accentuate the contrast
+        uColorMultiplier: { value: 5 }, 
     }
 })
 
@@ -70,6 +75,10 @@ gui.addColor(
             waterMaterial.uniforms.uSurfaceColor.value.set(debugObject.surfaceColor)
         }
     );
+
+gui.add(waterMaterial.uniforms.uColorOffset, 'value').min(0).max(1).step(0.001).name('uColorOffset');
+gui.add(waterMaterial.uniforms.uColorMultiplier, 'value').min(0).max(10).step(0.001).name('uColorMultiplier');
+
 
 // Mesh
 const water = new THREE.Mesh(waterGeometry, waterMaterial)

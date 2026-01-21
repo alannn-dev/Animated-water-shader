@@ -1,12 +1,17 @@
 uniform vec3 uDepthColor;
 uniform vec3 uSurfaceColor;
+uniform float uColorOffset;
+uniform float uColorMultiplier;
 
 varying float vElevation;
 
 void main()
 {
+
+    float mixStrength = (vElevation + uColorOffset) * uColorMultiplier;
+    
     // Mixing color of uDepthColor and uSurfaceColor according to vElevation.
-    vec3 color = mix(uDepthColor, uSurfaceColor, vElevation);
+    vec3 color = mix(uDepthColor, uSurfaceColor, mixStrength);
 
     // gl_FragColor = vec4(uDepthColor.r,uDepthColor.g, uDepthColor.b, 1.0);
     gl_FragColor = vec4(color, 1.0);
