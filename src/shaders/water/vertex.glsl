@@ -105,10 +105,11 @@ void main ()
     float frequency = 3.0; // Frequency to get more waves.
     float amplitude = 0.15; // 0.15 for amplitude (cnoise is now between -0.15 & 0.15).
 
+    // Layering 3 layers of details for small waves.
     for(float i = 1.0; i <= 3.0; i++)
     {
         // -= abs(): Digging the surface with clean trenches.
-        elevation -= abs(cnoise(vec3(modelPosition.xz * frequency, uTime * 0.02)) * amplitude); // 'uTime * 0.02' for slower speed.
+        elevation -= abs(cnoise(vec3(modelPosition.xz * frequency * i, uTime * 0.02)) * amplitude / i); // 'uTime * 0.02' for slower speed.
     }
 
     modelPosition.y += elevation;
